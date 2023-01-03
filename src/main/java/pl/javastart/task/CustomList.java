@@ -5,25 +5,25 @@ import java.util.Arrays;
 // Uzupełnij klasę. Możesz ją dowolnie modyfikować.
 // Celem jest, żeby przechodziły testy w src/test/java/[...]/CustomListTest
 public class CustomList<T> {
-    private int initSize = 10;
-    private T[] elements = (T[]) new Object[initSize];
+    private static final int INIT_SIZE = 10;
+    private T[] elements = (T[]) new Object[INIT_SIZE];
     private int size = 0;
 
-    private void checkOrEnoughCapacity(int capacity) {
-        if (capacity > elements.length) {
+    private void checkOrEnoughCapacity() {
+        if (size + 1 > elements.length) {
             int newSize = size * 2;
             elements = Arrays.copyOf(elements, newSize);
         }
     }
 
     public void add(T element) {
-        checkOrEnoughCapacity(size + 1);
+        checkOrEnoughCapacity();
         elements[size] = element;
         size++;
     }
 
     public void add(int index, T element) {
-        checkOrEnoughCapacity(size + 1);
+        checkOrEnoughCapacity();
         T[] newArray = Arrays.copyOfRange(elements, index, size);
         elements[index] = element;
         size++;
@@ -47,18 +47,7 @@ public class CustomList<T> {
 
     @Override
     public String toString() {
-        int notNullElements = checkHowManyNotNullElements();
-        T[] elementsToPrint = Arrays.copyOf(elements, notNullElements);
+        T[] elementsToPrint = Arrays.copyOf(elements, size);
         return Arrays.toString(elementsToPrint);
-    }
-
-    private int checkHowManyNotNullElements() {
-        int count = 0;
-        for (T element : elements) {
-            if (element != null) {
-                count++;
-            }
-        }
-        return count;
     }
 }
